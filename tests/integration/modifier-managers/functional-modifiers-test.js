@@ -120,17 +120,20 @@ module('Integration | Modifier Manager | functional modifier', function(hooks) {
 
       this.owner.register('service:foo', service, { instantiate: false });
 
-      this.registerModifier('songbird', makeFunctionalModifier(
-        {
-          services: ['foo']
-        },
-        hopefullyService => {
-          assert.equal(
-            service,
-            hopefullyService,
-            'the service is injected into the function'
-          );
-        }
+      this.registerModifier(
+        'songbird',
+        makeFunctionalModifier(
+          {
+            services: ['foo']
+          },
+          hopefullyService => {
+            assert.equal(
+              service,
+              hopefullyService,
+              'the service is injected into the function'
+            );
+          }
+        )
       );
 
       await render(hbs`<h1 {{songbird}}>Hey</h1>`);
