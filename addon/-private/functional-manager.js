@@ -24,9 +24,13 @@ function setup(modifier, element, args) {
 }
 
 export default class FunctionalModifierManager {
+  constructor(owner) {
+    this.owner = owner;
+  }
+
   createModifier(factory) {
-    const { class: fn, owner } = factory;
-    const services = getServiceInjections(fn, owner);
+    const { class: fn } = factory;
+    const services = getServiceInjections(fn, this.owner);
 
     return (...args) => fn(...services, ...args);
   }
