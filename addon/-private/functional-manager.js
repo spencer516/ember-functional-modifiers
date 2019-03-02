@@ -26,11 +26,23 @@ function setup(modifier, element, args) {
 export default class FunctionalModifierManager {
   constructor(owner) {
     this.owner = owner;
+    this.serviceCache = new WeakMap();
+  }
+
+  getServicesFor(fn) {
+    let services = this.serviceCache.get(fn);
+
+    if (services === undefined) {
+      services = getServiceInjections(fn, this.owner);
+      this.serviceCache.set(fn, services);
+    }
+
+    return services;
   }
 
   createModifier(factory) {
     const { class: fn } = factory;
-    const services = getServiceInjections(fn, this.owner);
+    const services = this.getServicesFor(fn);
 
     return (...args) => fn(...services, ...args);
   }
