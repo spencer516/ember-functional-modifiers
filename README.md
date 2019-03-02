@@ -33,6 +33,8 @@ Usage
 
 This addon does not provide any modifiers out of the box; instead (like Helpers), this library allows you to write your own.
 
+## Example without Cleanup
+
 For example, if you wanted to implement your own `scrollTop` modifier (similar to [this](https://github.com/emberjs/ember-render-modifiers#example-scrolling-an-element-to-a-position)), you may do something like this:
 
 ```js
@@ -51,6 +53,8 @@ Then, use it in your template:
   {{yield}}
 </div>
 ```
+
+## Example with Cleanup
 
 If the functionality you add in the modifier needs to be torn down when the element is removed, you can return a function for the teardown method.
 
@@ -79,6 +83,40 @@ export default makeFunctionalModifier(element => {
   {{yield}}
 </button>
 ```
+
+## Example with Service Injection
+
+You may also want to inject a service into your modifier.
+
+You can do that by supplying an injection object before the the modifier function. For example, suppose you wanted to track click events with `ember-metrics`:
+
+```js
+// app/modifiers/track-click.js
+import makeFunctionalModifier from 'ember-functional-modifiers';
+
+function trackClick(metrics, element, [eventName], options) {
+  const callback = () => metrics.trackEvent(eventName, options);
+
+  element.addEventListener('click', callback, true);
+
+  return () => element.removeEventListener('click', callback);
+}
+
+export default makeFunctionalModifier(
+  { services: ['metrics'] },
+  trackClick
+);
+```
+
+Then, you could use this in your template:
+
+```hbs
+<button {{track "Clicked the THING!"}}>
+  Click Me!
+</button>
+```
+
+*NOTE*: Because we are not observing the properties in the service in any way, if we are _reading_ a property on a service, the modifier will not recompute if that value changes. If that's the behavior you need, you probably want to pass that value into the modifier as an argument, rather than injecting it.
 
 Contributing
 ------------------------------------------------------------------------------
