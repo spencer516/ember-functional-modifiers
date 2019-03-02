@@ -1,8 +1,25 @@
 import Ember from 'ember';
 import FunctionalModifierManager from './-private/functional-manager';
+import { setServiceInjections } from './-private/service-injections';
 
-const SINGLETON_MANAGER = new FunctionalModifierManager();
+const MANAGERS = new WeakMap();
 
-export default function makeFunctionalModifier(fn) {
-  return Ember._setModifierManager(() => SINGLETON_MANAGER, fn);
+function managerFor(owner) {
+  let manager = MANAGERS.get(owner);
+  if (manager === undefined) {
+    manager = new FunctionalModifierManager(owner);
+  }
+
+  return manager;
+}
+
+export default function makeFunctionalModifier(...args) {
+  const fn = args.pop();
+  const injections = args.shift();
+
+  if (injections && injections.services) {
+    setServiceInjections(fn, injections.services);
+  }
+
+  return Ember._setModifierManager(managerFor, fn);
 }

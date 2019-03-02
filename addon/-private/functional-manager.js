@@ -1,3 +1,5 @@
+import { getServiceInjections } from './service-injections';
+
 const MODIFIER_STATE = new WeakMap();
 
 function teardown(modifier) {
@@ -22,10 +24,27 @@ function setup(modifier, element, args) {
 }
 
 export default class FunctionalModifierManager {
+  constructor(owner) {
+    this.owner = owner;
+    this.serviceCache = new WeakMap();
+  }
+
+  getServicesFor(fn) {
+    let services = this.serviceCache.get(fn);
+
+    if (services === undefined) {
+      services = getServiceInjections(fn, this.owner);
+      this.serviceCache.set(fn, services);
+    }
+
+    return services;
+  }
+
   createModifier(factory) {
-    // https://github.com/rwjblue/ember-modifier-manager-polyfill/issues/6
-    const fn = factory.class ? factory.class : factory;
-    return (...args) => fn(...args);
+    const { class: fn } = factory;
+    const services = this.getServicesFor(fn);
+
+    return (...args) => fn(...services, ...args);
   }
 
   installModifier(modifier, element, args) {
