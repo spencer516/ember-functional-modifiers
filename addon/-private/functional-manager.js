@@ -25,11 +25,10 @@ function setup(modifier, element, args) {
 
 export default class FunctionalModifierManager {
   createModifier(factory) {
-    // https://github.com/rwjblue/ember-modifier-manager-polyfill/issues/6
-    const fn = factory.class ? factory.class : factory;
-    const serivces = getServiceInjections(fn, factory.owner);
+    const { class: fn, owner } = factory;
+    const services = getServiceInjections(fn, owner);
 
-    return (...args) => fn(...serivces, ...args);
+    return (...args) => fn(...services, ...args);
   }
 
   installModifier(modifier, element, args) {
