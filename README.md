@@ -8,8 +8,17 @@ For more information on modifiers, please check out @pzuraq's wonderful [blog po
 Compatibility
 ------------------------------------------------------------------------------
 
+This is currently compatible with:
+
+* Ember.js v3.8 or above
+* Ember CLI v2.13 or above
+
+In the future, it will be supported with:
+
 * Ember.js v2.18 or above
 * Ember CLI v2.13 or above
+
+(Support for v2.18 is blocked by: https://github.com/rwjblue/ember-modifier-manager-polyfill/issues/6)
 
 
 Installation
