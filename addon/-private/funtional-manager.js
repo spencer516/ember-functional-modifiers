@@ -1,26 +1,46 @@
 import Ember from 'ember';
-import FunctionalModifier from '../modifiers/functional-modifier';
+
+const MODIFIER_STATE = new WeakMap();
+
+function teardown(modifier) {
+  if (!MODIFIER_STATE.has(modifier)) {
+    return;
+  }
+
+  const { teardown, element } = MODIFIER_STATE.get(modifier);
+
+  if (teardown && typeof teardown === 'function') {
+    teardown();
+  }
+
+  return element;
+}
+
+function setup(modifier, element, args) {
+  const { positional, named } = args;
+  const teardown = modifier(element, positional, named);
+
+  MODIFIER_STATE.set(modifier, { element, teardown });
+}
+
+export class FunctionalModifier {}
 
 export default Ember._setModifierManager(
   () => ({
     createModifier(factory) {
       // https://github.com/rwjblue/ember-modifier-manager-polyfill/issues/6
-      if (factory.class) {
-        return new factory.class();
-      } else {
-        return new factory();
-      }
+      const fn = factory.class ? factory.class : factory;
+      return (...args) => fn(...args);
     },
-    installModifier(instance, element, args) {
-      instance.element = element;
-      instance.setup(args);
+    installModifier(modifier, element, args) {
+      setup(modifier, element, args);
     },
-    updateModifier(instance, args) {
-      instance.teardown();
-      instance.setup(args);
+    updateModifier(modifier, args) {
+      const element = teardown(modifier);
+      setup(modifier, element, args);
     },
-    destroyModifier(instance) {
-      instance.teardown();
+    destroyModifier(modifier) {
+      teardown(modifier);
     }
   }),
   FunctionalModifier
