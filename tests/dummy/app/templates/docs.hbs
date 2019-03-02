@@ -1,0 +1,12 @@
+<DocsHeader />
+
+<DocsViewer as |Viewer|>
+  <Viewer.nav as |Nav|>
+    <Nav.section @label="Introduction" />
+    <Nav.item @label="Introduction" @route="docs.index" />
+  </Viewer.nav>
+
+  <Viewer.main>
+    {{outlet}}
+  </Viewer.main>
+</DocsViewer>
