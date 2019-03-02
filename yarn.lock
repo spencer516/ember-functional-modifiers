@@ -5811,10 +5811,10 @@ ember-modal-dialog@3.0.0-beta.3:
     ember-ignore-children-helper "^1.0.1"
     ember-wormhole "^0.5.5"
 
-ember-modifier-manager-polyfill@^1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/ember-modifier-manager-polyfill/-/ember-modifier-manager-polyfill-1.0.2.tgz#c0b2da9816aad56fb1398023185c249cf76fe4bc"
-  integrity sha512-zu0gcSbQ7aOAtGFPQbMPQ1XKU2/NUBN6+Px65L9r4HxEzKXNUd76o1HE5p4QhLS1V6rNCD7UNmsi5r57ar0Rag==
+ember-modifier-manager-polyfill@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/ember-modifier-manager-polyfill/-/ember-modifier-manager-polyfill-1.0.3.tgz#6554b70d09a7d3b80d366b72ed482fb9a3e813c0"
+  integrity sha512-d8Uz0BhAZaqzttF4NXTwJ/A8uPrgd7fMho5jh89BfzJAHu5WZfGewX9cbjh3m6f512ZyxkIeeolw3Z5/Jyaujg==
   dependencies:
     ember-cli-babel "^7.4.2"
     ember-cli-version-checker "^2.1.2"

@@ -31,7 +31,6 @@ jobs:
   allow_failures:
     - env: EMBER_TRY_SCENARIO=ember-canary
     - env: EMBER_TRY_SCENARIO=ember-lts-2.18
-    - env: EMBER_TRY_SCENARIO=ember-lts-3.4
 
   include:
     # runs linting and tests with current locked deps
