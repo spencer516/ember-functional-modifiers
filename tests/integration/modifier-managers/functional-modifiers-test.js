@@ -113,4 +113,27 @@ module('Integration | Modifier Manager | functional modifier', function(hooks) {
       assert.equal(callCount, 1);
     });
   });
+
+  module('service injection', () => {
+    test('it can inject a service', async function(assert) {
+      const service = {};
+
+      this.owner.register('service:foo', service, { instantiate: false });
+
+      this.registerModifier('songbird', makeFunctionalModifier(
+        {
+          services: ['foo']
+        },
+        hopefullyService => {
+          assert.equal(
+            service,
+            hopefullyService,
+            'the service is injected into the function'
+          );
+        }
+      );
+
+      await render(hbs`<h1 {{songbird}}>Hey</h1>`);
+    });
+  });
 });

@@ -1,3 +1,5 @@
+import { getServiceInjections } from './service-injections';
+
 const MODIFIER_STATE = new WeakMap();
 
 function teardown(modifier) {
@@ -25,7 +27,9 @@ export default class FunctionalModifierManager {
   createModifier(factory) {
     // https://github.com/rwjblue/ember-modifier-manager-polyfill/issues/6
     const fn = factory.class ? factory.class : factory;
-    return (...args) => fn(...args);
+    const serivces = getServiceInjections(fn, factory.owner);
+
+    return (...args) => fn(...serivces, ...args);
   }
 
   installModifier(modifier, element, args) {
