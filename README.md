@@ -45,16 +45,24 @@ Then, use it in your template:
 
 If the functionality you add in the modifier needs to be torn down when the element is removed, you can return a function for the teardown method.
 
-For example, if we wanted to write our own click handler, that may look like this:
+For example, if you wanted to have your elements dance randomly on the page using `setInterval`, but you wanted to make sure that was canceled when the element was removed, you could do:
 
 ```js
-// app/modifiers/click.js
+// app/modifiers/move-randomly.js
 import makeFunctionalModifier from 'ember-functional-modifiers';
 
-export default makeFunctionalModifier((element, [action]) => {
-  element.addEventListener('click', action);
-  return () => element.removeEventListener('click', action);
+const { random, round } = Math;
+
+export default makeFunctionalModifier(element => {
+  const id = setInterval(() => {
+    const top = round(random() * 500);
+    const left = round(random() * 500);
+    element.style.transform = `translate(${left}px, ${top}px)`;
+  }, 1000);
+
+  return () => clearInterval(id);
 });
+
 ```
 
 ```hbs
