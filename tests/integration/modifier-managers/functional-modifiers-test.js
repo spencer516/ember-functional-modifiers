@@ -2,45 +2,47 @@ import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
 import { render, settled } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
-import _makeFunctionalModifier from 'ember-functional-modifiers';
+import makeFunctionalModifier from 'ember-functional-modifiers';
 
 module('Integration | Modifier Manager | functional modifier', function(hooks) {
   setupRenderingTest(hooks);
 
-  let makeFunctionalModifier;
-
   hooks.beforeEach(function() {
-    makeFunctionalModifier = (name, callback) => {
-      this.owner.register(
-        `modifier:${name}`,
-        _makeFunctionalModifier(callback)
-      );
+    this.registerModifier = (name, modifier) => {
+      this.owner.register(`modifier:${name}`, modifier);
     };
   });
 
   module('args', () => {
     test('it passes element as first argument', async function(assert) {
-      makeFunctionalModifier('songbird', element =>
-        assert.equal(element.tagName, 'H1')
+      this.registerModifier(
+        'songbird',
+        makeFunctionalModifier(element => assert.equal(element.tagName, 'H1'))
       );
 
       await render(hbs`<h1 {{songbird}}>Hello</h1>`);
     });
 
     test('positional arguments are passed', async function(assert) {
-      makeFunctionalModifier('songbird', (_, [a, b]) => {
-        assert.equal(a, '1');
-        assert.equal(b, '2');
-      });
+      this.registerModifier(
+        'songbird',
+        makeFunctionalModifier((_, [a, b]) => {
+          assert.equal(a, '1');
+          assert.equal(b, '2');
+        })
+      );
 
       await render(hbs`<h1 {{songbird "1" "2"}}>Hey</h1>`);
     });
 
     test('named arguments are passed', async function(assert) {
-      makeFunctionalModifier('songbird', (_, __, { a, b }) => {
-        assert.equal(a, '1');
-        assert.equal(b, '2');
-      });
+      this.registerModifier(
+        'songbird',
+        makeFunctionalModifier((_, __, { a, b }) => {
+          assert.equal(a, '1');
+          assert.equal(b, '2');
+        })
+      );
 
       await render(hbs`<h1 {{songbird a="1" b="2"}}>Hey</h1>`);
     });
@@ -51,7 +53,10 @@ module('Integration | Modifier Manager | functional modifier', function(hooks) {
       let callCount = 0;
       this.shouldRender = true;
 
-      makeFunctionalModifier('songbird', () => () => callCount++);
+      this.registerModifier(
+        'songbird',
+        makeFunctionalModifier(() => () => callCount++)
+      );
 
       await render(hbs`
         {{#if this.shouldRender}}
@@ -72,7 +77,10 @@ module('Integration | Modifier Manager | functional modifier', function(hooks) {
       let callCount = 0;
       this.value = 0;
 
-      makeFunctionalModifier('songbird', () => callCount++);
+      this.registerModifier(
+        'songbird',
+        makeFunctionalModifier(() => callCount++)
+      );
 
       await render(hbs`<h1 {{songbird value}}>Hello</h1>`);
 
@@ -89,7 +97,10 @@ module('Integration | Modifier Manager | functional modifier', function(hooks) {
       let callCount = 0;
       this.value = 0;
 
-      makeFunctionalModifier('songbird', () => () => callCount++);
+      this.registerModifier(
+        'songbird',
+        makeFunctionalModifier(() => () => callCount++)
+      );
 
       await render(hbs`<h1 {{songbird value}}>Hello</h1>`);
 
