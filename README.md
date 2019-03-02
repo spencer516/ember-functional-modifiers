@@ -68,6 +68,13 @@ Contributing
 
 See the [Contributing](CONTRIBUTING.md) guide for details.
 
+Releasing
+------------------------------------------------------------------------------
+
+```sh
+yarn release
+```
+
 
 License
 ------------------------------------------------------------------------------
