@@ -1,9 +1,8 @@
-// TODO: I expected this to be imported were it exported in modifier-managers
-import './-private/funtional-manager';
-import FunctionalModifier from './modifiers/functional-modifier';
+import Ember from 'ember';
+import FunctionalModifierManager from './-private/functional-manager';
 
-export default function makeFunctionaModifier(fn) {
-  return class CustomModifier extends FunctionalModifier {
-    modifierFunction = fn;
-  };
+const SINGLETON_MANAGER = new FunctionalModifierManager();
+
+export default function makeFunctionalModifier(fn) {
+  return Ember._setModifierManager(() => SINGLETON_MANAGER, fn);
 }
