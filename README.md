@@ -79,7 +79,7 @@ export default makeFunctionalModifier(element => {
 ```
 
 ```hbs
-<button {{click (action "handleClick")}}>
+<button {{move-randomly}}>
   {{yield}}
 </button>
 ```
@@ -111,7 +111,7 @@ export default makeFunctionalModifier(
 Then, you could use this in your template:
 
 ```hbs
-<button {{track "Clicked the THING!"}}>
+<button {{track-click "Clicked the THING!"}}>
   Click Me!
 </button>
 ```
