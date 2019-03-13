@@ -84,6 +84,42 @@ export default makeFunctionalModifier(element => {
 </button>
 ```
 
+## Example with Cleanup (on destroy)
+
+By default, a functional modifier that returns a cleanup method will trigger the cleanup on each change — the reason for this is similar to the reason for the same behavior with [`useEffect`](https://reactjs.org/docs/hooks-effect.html#explanation-why-effects-run-on-each-update) in React.
+
+If, however, unsubscribing/resubscribing on every change is a particularly expensive action, you may only want to cleanup when the element is about to be removed, not when it updates. (An aside: Because you have to track some state between modifier calls, a better solution _may_ be to use [`ember-oo-modifiers`](https://github.com/sukima/ember-oo-modifiers) instead).
+
+But you can do it with a functional modifier. For example, let's imagine that we're using an RxJS observable-like thing that lets us hot-swap the action it fires. That may look something like:
+
+```js
+// app/modifiers/my-rx-thing.js
+import makeFunctionalModifier from 'ember-functional-modifiers';
+import subscribe from './my-rx-js-observer';
+
+const OBSERVERS = new WeakMap();
+
+export default makeFunctionalModifier((element, [action]) => {
+  const observer = OBSERVERS.has(element) ? OBSERVERS.get(element) : subscribe(element);
+
+  observer.updateAction(action);
+
+  OBSERVERS.set(element, observer);
+
+  return (isRemoving) => {
+    if (isRemoving) {
+      observer.unsubscribe();
+    }
+  };
+});
+```
+
+```hbs
+<button {{my-rx-thing (action "handleAction")}}>
+  Click Me!
+</button>
+```
+
 ## Example with Service Injection
 
 You may also want to inject a service into your modifier.

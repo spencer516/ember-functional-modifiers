@@ -2,7 +2,7 @@ import { getServiceInjections } from './service-injections';
 
 const MODIFIER_STATE = new WeakMap();
 
-function teardown(modifier) {
+function teardown(modifier, isRemoving) {
   if (!MODIFIER_STATE.has(modifier)) {
     return;
   }
@@ -10,7 +10,7 @@ function teardown(modifier) {
   const { teardown, element } = MODIFIER_STATE.get(modifier);
 
   if (teardown && typeof teardown === 'function') {
-    teardown();
+    teardown(isRemoving);
   }
 
   return element;
@@ -52,11 +52,11 @@ export default class FunctionalModifierManager {
   }
 
   updateModifier(modifier, args) {
-    const element = teardown(modifier);
+    const element = teardown(modifier, false);
     setup(modifier, element, args);
   }
 
   destroyModifier(modifier) {
-    teardown(modifier);
+    teardown(modifier, true);
   }
 }

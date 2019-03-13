@@ -112,6 +112,34 @@ module('Integration | Modifier Manager | functional modifier', function(hooks) {
 
       assert.equal(callCount, 1);
     });
+
+    test('teardown is invoked with `isRemoving` flag', async function(assert) {
+      this.value = 0;
+      this.shouldRender = true;
+
+      this.registerModifier(
+        'songbird',
+        makeFunctionalModifier(() => isRemoving =>
+          assert.step(isRemoving ? 'removing' : 'updating')
+        )
+      );
+
+      await render(hbs`
+        {{#if this.shouldRender}}
+          <h1 {{songbird value}}>Hello</h1>
+        {{/if}}
+      `);
+
+      this.set('value', 1);
+
+      await settled();
+
+      this.set('shouldRender', false);
+
+      await settled();
+
+      assert.verifySteps(['updating', 'removing']);
+    });
   });
 
   module('service injection', () => {
