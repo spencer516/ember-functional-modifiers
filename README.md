@@ -26,6 +26,14 @@ Usage
 
 This addon does not provide any modifiers out of the box; instead (like Helpers), this library allows you to write your own.
 
+## Generating a Functional Modifier
+
+To create a modifier (and a corresponding integration test), run:
+
+```
+ember new functional-modifier scroll-top
+```
+
 ## Example without Cleanup
 
 For example, if you wanted to implement your own `scrollTop` modifier (similar to [this](https://github.com/emberjs/ember-render-modifiers#example-scrolling-an-element-to-a-position)), you may do something like this:
