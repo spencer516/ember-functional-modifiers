@@ -54,3 +54,4 @@ install:
 
 script:
   - yarn try $EMBER_TRY_SCENARIO --skip-cleanup
+  - yarn node-test
