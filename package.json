@@ -6,6 +6,7 @@
     "ember-addon"
   ],
   "repository": "https://github.com/spencer516/ember-functional-modifiers",
+  "homepage": "https://github.com/spencer516/ember-functional-modifiers/blob/master/README.md",
   "license": "MIT",
   "author": "",
   "directories": {
@@ -72,6 +73,5 @@
   },
   "ember-addon": {
     "configPath": "tests/dummy/config"
-  },
-  "homepage": "https://spencer516.github.io/ember-functional-modifiers"
+  }
 }
