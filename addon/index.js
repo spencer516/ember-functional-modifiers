@@ -1,4 +1,4 @@
-import Ember from 'ember';
+import { setModifierManager } from '@ember/modifier';
 import FunctionalModifierManager from './-private/functional-manager';
 import { setServiceInjections } from './-private/service-injections';
 
@@ -21,5 +21,5 @@ export default function makeFunctionalModifier(...args) {
     setServiceInjections(fn, injections.services);
   }
 
-  return Ember._setModifierManager(managerFor, fn);
+  return setModifierManager(managerFor, fn);
 }
