@@ -31,7 +31,7 @@ This addon does not provide any modifiers out of the box; instead (like Helpers)
 To create a modifier (and a corresponding integration test), run:
 
 ```
-ember new functional-modifier scroll-top
+ember g functional-modifier scroll-top
 ```
 
 ## Example without Cleanup
