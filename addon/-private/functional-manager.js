@@ -1,3 +1,4 @@
+import { capabilities } from '@ember/modifier';
 import { getServiceInjections } from './service-injections';
 
 const MODIFIER_STATE = new WeakMap();
@@ -27,6 +28,7 @@ export default class FunctionalModifierManager {
   constructor(owner) {
     this.owner = owner;
     this.serviceCache = new WeakMap();
+    this.capabilities = capabilities('3.13');
   }
 
   getServicesFor(fn) {
