@@ -1,6 +1,8 @@
 ember-functional-modifiers
 ==============================================================================
 
+> **:warning: :point_right: This addon has been deprecated in favor of the official [`ember-modifier` addon](https://github.com/ember-modifier/ember-modifier). See the [upgrade guide](https://github.com/ember-modifier/ember-modifier#api-differences).**
+
 This addon provides a [`useLayoutEffect`-like](https://reactjs.org/docs/hooks-reference.html#useeffect) API for adding modifiers to elements in Ember.
 
 For more information on modifiers, please check out @pzuraq's wonderful [blog post](https://www.pzuraq.com/coming-soon-in-ember-octane-part-4-modifiers/).
